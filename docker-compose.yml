@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Backend Service
+  employee-management:
+    build: .
+    container_name: employee-management-app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/employee_db
+      - NODE_ENV=production
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
+  # MongoDB Service
+  mongodb:
+    image: mongo:6
+    container_name: mongodb-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+volumes:
+  mongo-data:
